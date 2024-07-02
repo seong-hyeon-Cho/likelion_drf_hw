@@ -36,21 +36,21 @@ def singer_list_create(request):
     if request.method =='GET':
         singers = Singer.objects.all()
         serializer = SingerSerializer(singers, many=True)
-        return Response(data=serializer.data)
+        return Response(serializer.data)
     
     if request.method=='POST':
         serializer=SingerSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response(data=serializer.data)
+            return Response(serializer.data)
         
 @api_view(['GET','POST'])
 def song_read_create(request, singer_id):
     singer = get_object_or_404(Singer, id = singer_id)
 
     if request.method=='GET':
-        comments=Song.objects.filter(singer=singer)
-        serializer=SongSerializer(comments,many=True)
+        songs=Song.objects.filter(singer=singer)
+        serializer=SongSerializer(songs,many=True)
         return Response(data=serializer.data)
     
     elif request.method =='POST':
